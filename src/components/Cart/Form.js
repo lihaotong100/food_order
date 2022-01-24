@@ -28,10 +28,12 @@ const Form = React.forwardRef((props,ref) => {
         street:true
     });
 
-    const formHasError = isNameValidate && isStreetValidate;
+    const formHasError = !isNameValidate && !isStreetValidate;
 
     const postOrderData = async () => {
-        
+        console.log("1");
+        props.isSubmitHandler(true);
+        console.log("2");
         const orderData = props.cart.items.map(item => {return {
             mealName: item.name,
             mealAmount: item.amount,
@@ -49,6 +51,8 @@ const Form = React.forwardRef((props,ref) => {
             })
         });
 
+        props.isSubmitHandler(false);
+        props.didSubmitHandler(true);
         console.log(respone);
 
         
@@ -58,7 +62,9 @@ const Form = React.forwardRef((props,ref) => {
             setFormValidity({name:false});
             return;
         }
-            
+
+        console.log(formHasError);
+
         if(formHasError)
             return;
         console.log("submitData");
@@ -67,7 +73,6 @@ const Form = React.forwardRef((props,ref) => {
 
     useImperativeHandle(ref,()=>({
          submitForm (event) {
-            console.log(event);
             submitData();
         }
     }));
